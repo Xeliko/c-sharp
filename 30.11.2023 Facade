@@ -1,0 +1,65 @@
+class CoffeeMachine
+{
+
+    public void TurnOn()
+    {
+        Console.WriteLine("Kofeyniy apparat vklucen");
+    }
+
+
+    public void BrewCoffee()
+    {
+        Console.WriteLine("Priqotovleniye koffee");
+    }
+    
+
+    public void CoffeeInCup()
+    {
+        Console.WriteLine("Nalivayem koffee v chashku");
+    }
+
+    public void TurnOff()
+    {
+        Console.WriteLine("Kofeyniy apparat viklucen");
+    }
+
+
+}
+
+class Coffee
+{
+
+    private CoffeeMachine machine;
+
+    public Coffee()
+    {
+        machine = new CoffeeMachine();  
+    }
+
+    public void MakeCoffee()
+    {
+        Console.WriteLine("Nachalo priqotovleniye koffee");
+
+        machine.TurnOn();
+        machine.BrewCoffee();
+        machine.CoffeeInCup();
+        machine.TurnOff();
+
+        Console.WriteLine("Koffee qotov");
+    }
+}
+
+
+class Program
+{
+
+    static void Main()
+    {
+
+        Coffee Cmachine = new Coffee();
+
+        Cmachine.MakeCoffee();
+
+        Console.ReadKey();
+    }
+}
