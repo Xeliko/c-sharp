@@ -1,0 +1,72 @@
+public interface IPage
+{
+    void Display(int pageNumber);
+}
+
+
+public class Page : IPage
+{
+
+    private int pageNumber;
+
+    public Page(int pageNumber)
+    {
+        this.pageNumber = pageNumber;
+    }
+
+    public void Display(int bookNumber)
+    {
+        Console.WriteLine($"Book {bookNumber}, Page {pageNumber} displayed");
+
+    }
+}
+
+
+public class PageFactory
+{
+
+    private Dictionary<int, IPage> pages = new Dictionary<int, IPage>();
+
+    public IPage GetPage(int pageNumber)
+    {
+        if (pages.ContainsKey(pageNumber))
+        {
+            return pages[pageNumber];
+        }
+
+        else
+        {
+            IPage newPage = new Page(pageNumber);
+            pages.Add(pageNumber, newPage);
+            return newPage;
+        }
+    }
+}
+
+
+class Program
+{
+    static void Main()
+    {
+
+        PageFactory pageFactory = new PageFactory(); 
+
+        for(int bookNumber = 1; bookNumber <= 2; bookNumber++)
+        {
+            Console.WriteLine($"Book {bookNumber}: ");
+
+
+            IPage page1 = pageFactory.GetPage(1);
+            page1.Display(bookNumber);
+
+            IPage page2 = pageFactory.GetPage(2);
+            page2.Display(bookNumber);
+
+            IPage page1Again = pageFactory.GetPage(1);
+            page1Again.Display(bookNumber); 
+
+
+
+        }
+    }
+}
