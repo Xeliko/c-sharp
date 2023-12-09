@@ -1,0 +1,66 @@
+public interface ICoffeeOrder
+{
+
+    void Serve();
+}
+
+public class CoffeeOrder : ICoffeeOrder
+{
+
+    private string coffeeType;
+
+    public CoffeeOrder(string coffeeType)
+    {
+        this.coffeeType = coffeeType;
+    }
+
+    public void Serve()
+    {
+
+        Console.WriteLine($"Serving {coffeeType}");
+    }
+}
+
+public class CoffeeOrderProxy : ICoffeeOrder
+{
+    private CoffeeOrder coffeeOrder;
+    private int customerAge;
+
+    public CoffeeOrderProxy(string coffeType, int customerAge)
+    {
+
+        this.coffeeOrder = new CoffeeOrder(coffeType);
+        this.customerAge = customerAge;
+    }
+
+    public void Serve()
+    {
+
+        if (customerAge >= 18)
+        {
+            coffeeOrder.Serve();
+        }
+
+        else
+        {
+
+            Console.WriteLine("Sorry customers under 18 are not aloowed to order coffee");
+        }
+    }
+
+}
+
+class Program
+{
+
+    static void Main()
+    {
+
+        ICoffeeOrder coffeeOrder = new CoffeeOrderProxy("Latte", 20);
+
+        coffeeOrder.Serve();
+
+        ICoffeeOrder underageCoffeeOrder = new CoffeeOrderProxy("Espresso", 15);
+        underageCoffeeOrder.Serve();
+    }
+}
