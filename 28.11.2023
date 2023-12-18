@@ -1,0 +1,78 @@
+using System;
+
+
+public interface IAutomobile
+{
+    string GetModelInfo();
+}
+
+
+public class Sedan : IAutomobile
+{
+    public string GetModelInfo()
+    {
+        return "Sedan: Comfortable family car.";
+    }
+}
+
+public class SUV : IAutomobile
+{
+    public string GetModelInfo()
+    {
+        return "SUV: Spacious and versatile.";
+    }
+}
+
+public class Truck : IAutomobile
+{
+    public string GetModelInfo()
+    {
+        return "Truck: Powerful vehicle for cargo transportation.";
+    }
+}
+
+
+public interface IAutomobileFactory
+{
+    IAutomobile CreateSedan();
+    IAutomobile CreateSUV();
+    IAutomobile CreateTruck();
+}
+
+
+public class FamilyCarFactory : IAutomobileFactory
+{
+    public IAutomobile CreateSedan()
+    {
+        return new Sedan();
+    }
+
+    public IAutomobile CreateSUV()
+    {
+        return new SUV();
+    }
+
+    public IAutomobile CreateTruck()
+    {
+        return new Truck();
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        
+        IAutomobileFactory familyCarFactory = new FamilyCarFactory();
+
+        
+        IAutomobile sedan = familyCarFactory.CreateSedan();
+        IAutomobile suv = familyCarFactory.CreateSUV();
+        IAutomobile truck = familyCarFactory.CreateTruck();
+
+        
+        Console.WriteLine(sedan.GetModelInfo());
+        Console.WriteLine(suv.GetModelInfo());
+        Console.WriteLine(truck.GetModelInfo());
+    }
+}
