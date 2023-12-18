@@ -1,0 +1,115 @@
+using System;
+
+// Интерфейс состояния
+public interface ICoffeeMachineState
+{
+    void InsertCoin(CoffeeMachine context);
+    void PressButton(CoffeeMachine context);
+    void DispenseCoffee(CoffeeMachine context);
+}
+
+// Конкретное состояние: Ожидание монеты
+public class WaitingForCoinState : ICoffeeMachineState
+{
+    public void InsertCoin(CoffeeMachine context)
+    {
+        Console.WriteLine("Coin inserted.");
+        context.SetState(new CoinInsertedState());
+    }
+
+    public void PressButton(CoffeeMachine context)
+    {
+        Console.WriteLine("Insert coin first.");
+    }
+
+    public void DispenseCoffee(CoffeeMachine context)
+    {
+        Console.WriteLine("Insert coin first.");
+    }
+}
+
+// Конкретное состояние: Монета вставлена
+public class CoinInsertedState : ICoffeeMachineState
+{
+    public void InsertCoin(CoffeeMachine context)
+    {
+        Console.WriteLine("Coin already inserted.");
+    }
+
+    public void PressButton(CoffeeMachine context)
+    {
+        Console.WriteLine("Button pressed. Dispensing coffee...");
+        context.SetState(new CoffeeDispensedState());
+    }
+
+    public void DispenseCoffee(CoffeeMachine context)
+    {
+        Console.WriteLine("Insert coin first.");
+    }
+}
+
+// Конкретное состояние: Кофе выдан
+public class CoffeeDispensedState : ICoffeeMachineState
+{
+    public void InsertCoin(CoffeeMachine context)
+    {
+        Console.WriteLine("Please take your coffee first.");
+    }
+
+    public void PressButton(CoffeeMachine context)
+    {
+        Console.WriteLine("Please take your coffee first.");
+    }
+
+    public void DispenseCoffee(CoffeeMachine context)
+    {
+        Console.WriteLine("Coffee already dispensed. Enjoy!");
+        context.SetState(new WaitingForCoinState());
+    }
+}
+
+// Контекст (кофейный автомат)
+public class CoffeeMachine
+{
+    private ICoffeeMachineState currentState;
+
+    public CoffeeMachine()
+    {
+        currentState = new WaitingForCoinState();
+    }
+
+    public void SetState(ICoffeeMachineState state)
+    {
+        currentState = state;
+    }
+
+    public void InsertCoin()
+    {
+        currentState.InsertCoin(this);
+    }
+
+    public void PressButton()
+    {
+        currentState.PressButton(this);
+    }
+
+    public void DispenseCoffee()
+    {
+        currentState.DispenseCoffee(this);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+
+        coffeeMachine.InsertCoin();
+        coffeeMachine.PressButton();
+        coffeeMachine.DispenseCoffee();
+
+        // Попытка получить кофе без вставленной монеты
+        coffeeMachine.PressButton();
+    }
+}
