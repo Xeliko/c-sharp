@@ -1,0 +1,231 @@
+
+
+//Zadaniye 1
+
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+
+//class Program
+//{
+//    static void Main()
+//    {
+//        int[] numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+
+
+//        PrintArray("Chetniye chisla: ", FilterArray(numbers, IsEven));
+
+
+//        PrintArray("Necehetniye chisla: ", FilterArray(numbers, IsOdd));
+
+
+//        PrintArray("Prostiye chisla: ", FilterArray(numbers, IsPrime));
+
+
+//        PrintArray("Chisla Fibonacci : ", FilterArray(numbers, IsFibonacci));
+//    }
+
+//    static void PrintArray(string message, IEnumerable<int> array)
+//    {
+//        Console.WriteLine(message + string.Join(", ", array));
+//    }
+
+//    static IEnumerable<int> FilterArray(int[] array, Func<int, bool> filter)
+//    {
+//        return array.Where(filter);
+//    }
+
+//    static bool IsEven(int number) => number % 2 == 0;
+
+//    static bool IsOdd(int number) => number % 2 != 0;
+
+//    static bool IsPrime(int number)
+//    {
+//        if (number <= 1) return false;
+//        for (int i = 2; i <= Math.Sqrt(number); i++)
+//        {
+//            if (number % i == 0)
+//                return false;
+//        }
+//        return true;
+//    }
+
+//    static bool IsFibonacci(int number)
+//    {
+//        int a = 0, b = 1;
+//        while (b < number)
+//        {
+//            int temp = a;
+//            a = b;
+//            b = temp + b;
+//        }
+//        return b == number;
+//    }
+//}
+
+
+//Zadaniye 2
+//using System;
+
+//class Program
+//{
+//    static void Main()
+//    {
+
+//        Action displayTime = () => Console.WriteLine($"Tekushee vremya: {DateTime.Now.ToLongTimeString()}");
+//        displayTime();
+
+
+//        Action displayDate = () => Console.WriteLine($"Tekushaya data: {DateTime.Now.ToShortDateString()}");
+//        displayDate();
+
+
+//        Action displayDayOfWeek = () => Console.WriteLine($"Tekushiy den nedeli: {DateTime.Now.DayOfWeek}");
+//        displayDayOfWeek();
+
+
+//        Func<double, double, double, double> calculateTriangleArea = (a, b, c) =>
+//        {
+//            double s = (a + b + c) / 2.0;
+//            return Math.Sqrt(s * (s - a) * (s - b) * (s - c));
+//        };
+//        Console.WriteLine($"Ploshad treuqolnika: {calculateTriangleArea(3, 4, 5)}");
+
+
+//        Func<double, double, double> calculateRectangleArea = (length, width) => length * width;
+//        Console.WriteLine($"Ploshad pramouqolnika: {calculateRectangleArea(6, 8)}");
+//    }
+//}
+
+
+
+//Zadaniye 3
+//using System;
+
+//class CreditCard
+//{
+//    public event EventHandler<AccountEventArgs> AccountCredited;
+//    public event EventHandler<AccountEventArgs> MoneySpent;
+//    public event EventHandler<AccountEventArgs> CreditStarted;
+//    public event EventHandler<AccountEventArgs> TargetAmountReached;
+//    public event EventHandler<PinChangedEventArgs> PinChanged;
+
+//    public string CardNumber { get; set; }
+//    public string OwnerName { get; set; }
+//    public DateTime ExpiryDate { get; set; }
+//    private int pin;
+//    public decimal CreditLimit { get; set; }
+//    private decimal balance;
+
+//    public decimal Balance
+//    {
+//        get { return balance; }
+//        private set
+//        {
+//            balance = value;
+//            OnAccountCredited(new AccountEventArgs(balance));
+//        }
+//    }
+
+//    public int PIN
+//    {
+//        get { return pin; }
+//        set
+//        {
+//            pin = value;
+//            OnPinChanged(new PinChangedEventArgs(pin));
+//        }
+//    }
+
+//    public CreditCard(string cardNumber, string ownerName, DateTime expiryDate, int pin, decimal creditLimit)
+//    {
+//        CardNumber = cardNumber;
+//        OwnerName = ownerName;
+//        ExpiryDate = expiryDate;
+//        PIN = pin;
+//        CreditLimit = creditLimit;
+//    }
+
+//    public void Deposit(decimal amount)
+//    {
+//        Balance += amount;
+//    }
+
+//    public void SpendMoney(decimal amount)
+//    {
+//        if (Balance >= amount)
+//        {
+//            Balance -= amount;
+//            OnMoneySpent(new AccountEventArgs(balance));
+//        }
+//        else
+//        {
+//            Console.WriteLine("Nedostatochno sredstv na shete.");
+//        }
+//    }
+
+//    public void StartCredit(decimal amount)
+//    {
+//        if (amount <= CreditLimit)
+//        {
+//            Balance -= amount;
+//            OnCreditStarted(new AccountEventArgs(balance));
+//        }
+//        else
+//        {
+//            Console.WriteLine("Previshen kreditniy limit.");
+//        }
+//    }
+
+//    private void OnAccountCredited(AccountEventArgs e)
+//    {
+//        AccountCredited?.Invoke(this, e);
+//    }
+
+//    private void OnMoneySpent(AccountEventArgs e)
+//    {
+//        MoneySpent?.Invoke(this, e);
+//    }
+
+//    private void OnCreditStarted(AccountEventArgs e)
+//    {
+//        CreditStarted?.Invoke(this, e);
+
+//        if (Balance <= 0)
+//        {
+//            OnTargetAmountReached(new AccountEventArgs(balance));
+//        }
+//    }
+
+//    private void OnTargetAmountReached(AccountEventArgs e)
+//    {
+//        TargetAmountReached?.Invoke(this, e);
+//    }
+
+//    private void OnPinChanged(PinChangedEventArgs e)
+//    {
+//        PinChanged?.Invoke(this, e);
+//    }
+//}
+
+//public class AccountEventArgs : EventArgs
+//{
+//    public decimal Balance { get; }
+
+//    public AccountEventArgs(decimal balance)
+//    {
+//        Balance = balance;
+//    }
+//}
+
+//public class PinChangedEventArgs : EventArgs
+//{
+//    public int NewPin { get; }
+
+//    public PinChangedEventArgs(int newPin)
+//    {
+//        NewPin = newPin;
+//    }
+//}
+
+
